@@ -59,6 +59,12 @@ func main() {
 	//get book by authorID
 	router.GET("/api/v1/books/author/:authorID", getBookByAuthorID)
 
+	//update book
+	router.PUT("/api/v1/books/:id", updateBook)
+
+	//update author
+	router.PUT("/api/v1/authors/:id", updateAuthor)
+
 	router.Run("localhost:3000")
 }
 

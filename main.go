@@ -65,7 +65,14 @@ func main() {
 	//update author
 	router.PUT("/api/v1/authors/:id", updateAuthor)
 
+	//delete book
+	router.DELETE("/api/v1/books/:id", deleteBook)
+
+	//delete author
+	router.DELETE("/api/v1/books/:id", deleteAuthor)
+
 	router.Run("localhost:3000")
+
 }
 
 // write code to handle the endpoints
@@ -186,4 +193,33 @@ func updateBook(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+}
+
+// delete book
+func deleteBook(c *gin.Context) {
+	id := c.Param("id")
+
+	for i, book := range books {
+		if book.BookID == id {
+			books = append(books[:i], books[i+1:]...)
+			c.IndentedJSON(http.StatusOK, gin.H{"message": "Book deleted"})
+			return
+		}
+	}
+
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+}
+
+// delete author
+func deleteAuthor(c *gin.Context) {
+	id := c.Param("id")
+
+	for i, author := range authors {
+		if author.AuthorID == id {
+			authors = append(authors[:i], authors[i+1:]...)
+			c.IndentedJSON(http.StatusOK, gin.H{"message": "Author deleted"})
+		}
+	}
+
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Author not found"})
 }

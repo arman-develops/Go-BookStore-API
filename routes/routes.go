@@ -8,7 +8,10 @@ import (
 	"go-book-api/middleware"
 )
 
-func SetupRouter(bookController *controllers.BookController) *gin.Engine {
+func SetupRouter(
+	bookController *controllers.BookController,
+	authorController *controllers.AuthorController,
+) *gin.Engine {
 	router := gin.Default()
 
 	//apply global middleware
@@ -26,6 +29,16 @@ func SetupRouter(bookController *controllers.BookController) *gin.Engine {
 			books.DELETE("/:id", bookController.DeleteBook)
 		}
 
+		authors := v2.Group("/authors")
+		{
+			authors.GET("", authorController.GetAuthors)
+			authors.GET("/:id", authorController.GetAuthor)
+			authors.POST("", authorController.CreateAuthor)
+			authors.PUT("/:id", authorController.UpdateAuthor)
+			authors.DELETE("/:id", authorController.DeleteAuthor)
+		}
+
 	}
+
 	return router
 }

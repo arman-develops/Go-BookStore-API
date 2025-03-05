@@ -24,17 +24,20 @@ func main() {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	//automigrate the schema
+	//automigrate the schemas
 	db.AutoMigrate(&models.Book{})
+	db.AutoMigrate(&models.Author{})
 
 	//initialize repositories
 	bookRepo := repositories.NewBookRepository(db)
+	authorRepo := repositories.NewAuthorRepository(db)
 
 	//initia controllers
 	bookController := controllers.NewBookController(bookRepo)
+	authorController := controllers.NewAuthorController(authorRepo)
 
 	//setup routes
-	router := routes.SetupRouter(bookController)
+	router := routes.SetupRouter(bookController, authorController)
 
 	//start server
 	log.Printf("Server running on port %s", cfg.DBPort)

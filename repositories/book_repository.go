@@ -39,7 +39,7 @@ func (r *BookRepository) GetBookByID(id string) (models.Book, error) {
 // }
 
 // CreateBook: adds a new book to the respository
-func (r *BookRepository) CreateBook(book models.Book) {
+func (r *BookRepository) CreateBook(book models.Book) (models.Book, error) {
 	result := r.DB.Create(&book)
 	return book, result.Error
 }
